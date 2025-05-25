@@ -1,15 +1,21 @@
 pipeline {
-  agent any
-  stages {
-    stage('Build Docker Image') {
-      steps {
-        sh 'docker build -t hendsiam/jenkins:v8 .'
-      }
-    
-    stage('Push Docker Image') {
-      steps {
-        sh 'docker push hendsiam/jenkins:v8'
-      }
+    agent any
+
+    environment {
+        XYZ = 'ITI ITI ITI'
     }
-  }
+
+    stages {
+        stage("Build Docker image") {
+            steps {
+                sh "docker build -t hendsiam/jenkins:v${BUILD_NUMBER} ."
+            }
+        }
+
+        stage("Push Docker image") {
+            steps {
+                sh "docker push hendsiam/jenkins:v${BUILD_NUMBER}"
+            }
+        }
+    }
 }
