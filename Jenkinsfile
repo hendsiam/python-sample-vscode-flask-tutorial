@@ -1,21 +1,22 @@
 pipeline {
-    agent any
-
-    environment {
-        XYZ = 'ITI ITI ITI'
+  agent any
+  stages {
+    stage('Build Docker Image') {
+      steps {
+        sh 'docker build -t hendsiam/jenkins:v8 .'
+      }
     }
-
-    stages {
-        stage("Build Docker image") {
-            steps {
-                sh "docker build -t hendsiam/jenkins:v${BUILD_NUMBER} ."
-            }
+    stage('Docker Login') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'your-credential-id', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+          sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
         }
-
-        stage("Push Docker image") {
-            steps {
-                sh "docker push hendsiam/jenkins:v${BUILD_NUMBER}"
-            }
-        }
+      }
     }
+    stage('Push Docker Image') {
+      steps {
+        sh 'docker push hendsiam/jenkins:v8'
+      }
+    }
+  }
 }
