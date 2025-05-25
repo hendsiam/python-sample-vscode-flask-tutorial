@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent{
+        label "agent"
+    }
 
     environment {
         XYZ = 'ITI ITI ITI'
