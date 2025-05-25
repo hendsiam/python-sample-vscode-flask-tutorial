@@ -1,5 +1,4 @@
 pipeline{
-    
     environment{
         XYZ='ITI ITI ITI'
     }
